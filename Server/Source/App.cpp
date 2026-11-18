@@ -152,9 +152,10 @@ void App::initialise(const String& commandLineParameters) {
 #endif
 #ifdef JUCE_MAC
             if (!askForAccessibilityPermission()) {
-                AlertWindow::showMessageBox(
-                    AlertWindow::WarningIcon, "Warning",
-                    "AudioGridder needs the Accessibility permission to remote control plugins.", "OK");
+                // Local build: do not block startup on the Accessibility gate. The permission is
+                // only needed to remote-control plugin UIs from another machine; local hosting
+                // works without it. Log and continue.
+                logln("Accessibility permission not granted: remote plugin UI control unavailable.");
             }
 #endif
             json opts;
